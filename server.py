@@ -24,10 +24,12 @@ def create_server() -> socket.socket:
     sock.bind((HOST, PORT))
     sock.listen(1)
     print('server is listening...')
+    return sock
 
 def create_ssl_context() -> ssl.SSLContext:
     context = ssl.create_default_context(ssl.PROTOCOL_TLS_SERVER)
     context.load_cert_chain(certfile='server.crt', keyfile='server.key')
+    return context
 
 
 if __name__ == '__main__':
