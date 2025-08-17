@@ -8,7 +8,7 @@ PORT = 8080
 
 def generate_new_key(client_ip):
     random_key = os.urandom(32) # 32 bytes -> 256 bits
-    with open(os.path.join('keys', client_ip), 'wb') as key_file:
+    with open(os.path.join('keys', f'{client_ip}.txt'), 'wb') as key_file:
         key_file.write(random_key)
     return random_key
 
